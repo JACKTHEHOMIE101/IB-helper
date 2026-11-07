@@ -1,0 +1,27 @@
+{
+  "name": "superday-prep",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Investment banking interview prep for students recruiting from non-target schools.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "DEV_FAKE_AUTH=1 AI_FAKE=1 DATABASE_URL=pgmem PORT=3000 node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "jose": "^6.2.15",
+    "pg": "^8.23.1",
+    "stripe": "^23.1.0"
+  },
+  "devDependencies": {
+    "pg-mem": "^3.0.14",
+    "supertest": "^7.3.2"
+  }
+}

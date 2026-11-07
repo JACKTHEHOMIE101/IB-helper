@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="A free 12-question investment banking technicals quiz: find your interview readiness level and what to fix first.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<title>Superday Readiness Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: one centered column; a hero, then one question per screen, then a result sheet. Same visual system as the Superday Prep app. */
+:root{
+  --bg:#ECEFEC; --surface:#F8FAF8; --sunk:#E2E7E3; --ink:#13201B; --muted:#56665F; --line:#CBD4CF;
+  --accent:#1D6A4C; --accent-ink:#FFFFFF; --accent-soft:#D5E7DE;
+  --red:#AE3636; --red-soft:#F3DEDC; --amber:#9A620E; --blue:#2E5B88;
+  --display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1513; --surface:#17201C; --sunk:#111916; --ink:#E2EAE5; --muted:#93A39B; --line:#2B3833;
+  --accent:#4FB388; --accent-ink:#08120D; --accent-soft:#1D3229;
+  --red:#E27474; --red-soft:#3A1F1F; --amber:#D9A24A; --blue:#82AAD6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1513; --surface:#17201C; --sunk:#111916; --ink:#E2EAE5; --muted:#93A39B; --line:#2B3833;
+  --accent:#4FB388; --accent-ink:#08120D; --accent-soft:#1D3229;
+  --red:#E27474; --red-soft:#3A1F1F; --amber:#D9A24A; --blue:#82AAD6; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body)}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.brand{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:28px}
+.brand b{font:700 1.15rem var(--display);letter-spacing:.01em}
+.eyebrow{font:600 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 clamp(2.2rem,7vw,3.4rem)/1.02 var(--display);letter-spacing:-.015em;margin:8px 0 14px;text-wrap:balance}
+h2{font:600 1.5rem/1.2 var(--display);margin:0;text-wrap:balance}
+h3{font:600 1.05rem/1.25 var(--display);margin:0}
+p{margin:0}
+.lede{font-size:1.1rem;color:var(--muted);max-width:56ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;margin:20px 0 26px;font:500 .85rem var(--mono);color:var(--muted)}
+.facts span::before{content:"▪ ";color:var(--accent)}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:30px}
+.topics div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:.88rem}
+.topics b{display:block;font-family:var(--display);font-size:1rem}
+.btn{font:600 1rem var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:11px 18px;border-radius:5px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:focus-visible,.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.hint{color:var(--muted);font-size:.85rem}
+.prog{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.bar{height:6px;background:var(--sunk);border-radius:3px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.q{font:500 1.35rem/1.38 var(--body);margin:6px 0 20px;text-wrap:pretty}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:1.8em minmax(0,1fr);gap:10px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-size:1rem}
+.opt kbd{font:600 .78rem var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:3px;text-align:center;padding:1px 0}
+.opt:hover:not([disabled]){border-color:var(--ink)}
+.opt.unsure{color:var(--muted);font-style:italic}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--accent);background:var(--accent-soft)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.explain{margin-top:16px;padding:14px 16px;border-left:4px solid var(--accent);background:var(--surface);border-radius:4px}
+.explain.miss{border-left-color:var(--red)}
+.explain b{display:block;margin-bottom:4px}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:24px}
+.big{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:6px 0 10px}
+.big b{font:600 3.4rem/1 var(--mono)}
+.big small{font-size:1.2rem;color:var(--muted)}
+.level{font:700 .8rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:3px;border:1.5px solid currentColor}
+.l0{color:var(--red)}.l1{color:var(--amber)}.l2{color:var(--accent)}.l3{color:var(--blue)}
+.ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:18px 0 6px}
+.ladder div{padding:6px 8px;border-top:4px solid var(--line);font-size:.75rem;color:var(--muted)}
+.ladder div.on{border-top-color:var(--accent);color:var(--ink);font-weight:600}
+.tlist{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.trow{display:grid;grid-template-columns:9.5em minmax(0,1fr) auto;gap:10px;align-items:center;font-size:.92rem}
+.pips{display:flex;gap:4px}
+.pips i{width:18px;height:18px;border-radius:3px;background:var(--sunk);border:1px solid var(--line)}
+.pips i.ok{background:var(--accent);border-color:var(--accent)}
+.pips i.no{background:var(--red-soft);border-color:var(--red)}
+.tag{font:600 .7rem var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.tag.s{color:var(--accent)}.tag.m{color:var(--amber)}.tag.g{color:var(--red)}
+.section{margin-top:26px;display:flex;flex-direction:column;gap:10px}
+.fix{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.fix li{padding:12px 14px;background:var(--bg);border-radius:6px;font-size:.95rem}
+.fix li b{display:block;font-family:var(--display);font-size:1rem}
+.cta{margin-top:28px;padding:22px;border-radius:8px;background:var(--ink);color:var(--bg)}
+.cta h2{color:var(--bg)}
+.cta p{color:var(--bg);opacity:.85;margin:6px 0 16px;max-width:56ch}
+.cta .btn.primary{background:var(--accent);border-color:var(--accent)}
+details.miss{border-top:1px solid var(--line);padding:10px 0}
+details.miss summary{cursor:pointer;font-size:.95rem}
+details.miss summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+details.miss .body{padding:8px 0 0;font-size:.92rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+details.miss .body b{color:var(--ink)}
+textarea{width:100%;font:14px/1.5 var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px;min-height:110px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:4px;font-size:.9rem}
+@media (max-width:560px){.trow{grid-template-columns:7.5em minmax(0,1fr)}.trow .tag{grid-column:2}.ladder div{font-size:.68rem;padding:6px 4px}.q{font-size:1.15rem}}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><b>Superday Prep</b><span class="eyebrow">Free readiness quiz</span></div>
+  <main id="app"></main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+// Where the "Get the full kit" button goes. Swap in your kit's sales or sign-up page.
+const CTA_URL="/";
+
+// 12 slots, each with two interchangeable questions so a retake is different. The first option is correct; options are shuffled on display.
+const SLOTS=[
+ {t:"Accounting",qs:[
+  {q:"Depreciation goes up by $10. With a 25% tax rate, what happens to the company's cash?",o:["Up $2.50","Down $10","Down $7.50","No change"],e:"Net income falls by $7.50 (10 × 75%). On the cash flow statement you add back the $10 non-cash expense, so cash rises by $2.50: the tax saved."},
+  {q:"Which financial statement best shows whether a company is actually generating cash?",o:["Cash flow statement","Income statement","Balance sheet","Statement of shareholders' equity"],e:"Net income includes non-cash items and ignores working capital. The cash flow statement shows the cash the business really produced and where it went."}]},
+ {t:"Accounting",qs:[
+  {q:"A company buys $50 of inventory with cash. What happens on the income statement?",o:["Nothing","Expenses rise by $50","Net income falls by $50 × (1 − tax rate)","Revenue falls by $50"],e:"Buying inventory isn't an expense. It only hits the income statement as cost of goods sold when the inventory is sold. Cash falls and inventory rises on the balance sheet."},
+  {q:"A customer prepays $100 for a service to be delivered next year. Right after the payment, which is true?",o:["Cash and deferred revenue both rise by $100","Revenue rises by $100","Accounts receivable rises by $100","Net income rises by $100"],e:"The company has the cash but hasn't earned it yet, so it records a liability (deferred revenue). Revenue is recognized as the service is delivered."}]},
+ {t:"Accounting",qs:[
+  {q:"A company records $10 of stock-based compensation. With a 25% tax rate, what happens to cash?",o:["Up $2.50","Down $10","Down $7.50","No change"],e:"Net income falls by $7.50, but stock comp is non-cash, so the $10 is added back on the cash flow statement. Cash rises by $2.50. Equity also rises by $2.50: +$10 of paid-in capital, −$7.50 of retained earnings."},
+  {q:"A company sells equipment with a $100 book value for $80 in cash. With a 25% tax rate, how much does cash change?",o:["Up $85","Up $80","Up $60","Up $100"],e:"The $20 loss cuts net income by $15. Add back the non-cash loss (+$20) in operations and record the $80 sale in investing: −15 + 20 + 80 = +$85. The extra $5 is the tax saved on the loss."}]},
+ {t:"Enterprise Value",qs:[
+  {q:"Equity value is $400, debt is $150 and cash is $50. What's enterprise value?",o:["$500","$600","$300","$400"],e:"EV = equity value + debt − cash = 400 + 150 − 50 = $500."},
+  {q:"Why do you subtract cash when calculating enterprise value?",o:["Cash is a non-operating asset, and EV values the core business","Cash is a liability","To avoid double-counting revenue","Because cash is paid out as dividends"],e:"EV measures the value of the operating business to all investors. Excess cash isn't part of operations, and a buyer effectively gets it back, so it's subtracted."}]},
+ {t:"Enterprise Value",qs:[
+  {q:"A company issues $100 of new stock and keeps the cash. What happens to enterprise value?",o:["It doesn't change","It rises by $100","It falls by $100","It rises by $100 × the tax rate"],e:"Equity value rises by $100, but so does cash, which is subtracted. The operating business is the same, so EV is unchanged."},
+  {q:"Which pairing of value and metric is consistent?",o:["Enterprise value / EBITDA","Enterprise value / net income","Equity value / EBITDA","Equity value / revenue"],e:"EBITDA is before interest, so it belongs to all capital providers: use enterprise value. Net income is after interest and belongs only to shareholders: use equity value."}]},
+ {t:"Valuation",qs:[
+  {q:"Which valuation method usually produces the highest value?",o:["Precedent transactions","Trading comparables","52-week trading range","Liquidation value"],e:"Precedent transactions include the control premium buyers pay to acquire a whole company, so they usually come out highest."},
+  {q:"Peers trade at 10x EV/EBITDA. Your company has $20M of EBITDA and $50M of net debt. What's the implied equity value?",o:["$150M","$200M","$250M","$170M"],e:"Implied EV = 10 × 20 = $200M. Equity value = EV − net debt = 200 − 50 = $150M. An EV multiple gives EV, not equity value."}]},
+ {t:"DCF",qs:[
+  {q:"What's the right discount rate for unlevered free cash flow?",o:["WACC","Cost of equity","The risk-free rate","Cost of debt"],e:"Unlevered free cash flow is available to both debt and equity holders, so it's discounted at the blended cost of both: WACC."},
+  {q:"Final-year free cash flow is $10M, WACC is 10% and terminal growth is 2%. What's the terminal value?",o:["$127.5M","$125M","$100M","$83.3M"],e:"TV = FCF × (1 + g) / (WACC − g) = 10 × 1.02 / 0.08 = $127.5M. The common mistake is forgetting to grow the cash flow one year, which gives $125M."}]},
+ {t:"DCF",qs:[
+  {q:"A company takes on much more debt. What happens to its cost of equity?",o:["It rises","It falls","It doesn't change","It becomes equal to the cost of debt"],e:"More leverage makes equity riskier, which raises levered beta and therefore the cost of equity."},
+  {q:"EBIT is $100, the tax rate 25%, D&A $20, CapEx $30, and net working capital rises by $10. What's unlevered free cash flow?",o:["$55","$80","$65","$45"],e:"UFCF = EBIT × (1 − t) + D&A − CapEx − increase in NWC = 75 + 20 − 30 − 10 = $55."}]},
+ {t:"LBO",qs:[
+  {q:"Which of these is NOT one of the main drivers of LBO returns?",o:["Higher management fees","EBITDA growth","Paying down debt","Exiting at a higher multiple"],e:"Returns come from growing EBITDA, paying down debt, and multiple expansion. Fees reduce returns to investors."},
+  {q:"Roughly what IRR do you earn by doubling your money in 3 years?",o:["About 26%","About 15%","About 20%","About 33%"],e:"2x in 3 years ≈ 26%. Useful anchors: 2x in 5 years ≈ 15%, 3x in 5 years ≈ 25%."}]},
+ {t:"LBO",qs:[
+  {q:"A sponsor buys a company for $100M using 60% debt. Five years later it sells for $150M with $30M of debt left. What's the multiple on the sponsor's money?",o:["3.0x","1.5x","2.0x","2.5x"],e:"Equity in = $40M. Equity out = 150 − 30 = $120M. MOIC = 120 / 40 = 3.0x, roughly a 25% IRR over 5 years."},
+  {q:"Which company is the best LBO candidate?",o:["Stable cash flow and low CapEx needs","Volatile cash flow and heavy CapEx","Fast growth but negative cash flow","Already carrying a lot of debt"],e:"An LBO depends on cash flow to pay down debt. Stable, predictable cash flow and low reinvestment needs make the debt safe to carry."}]},
+ {t:"M&A",qs:[
+  {q:"In an all-stock deal, the buyer trades at 20x earnings and pays 15x for the target. Ignoring synergies and fees, the deal is:",o:["Accretive","Dilutive","Neutral","Impossible to tell"],e:"The buyer is using expensive currency (its 20x stock) to buy cheaper earnings (15x), so EPS rises. When the buyer's P/E is higher than the P/E it pays, an all-stock deal is accretive."},
+  {q:"For a buyer with plenty of excess cash, which funding is usually cheapest in terms of EPS impact?",o:["Cash","New debt","New stock","Preferred stock"],e:"The cost of using cash is the interest it would have earned, after tax, which is usually lower than the after-tax cost of new debt or the earnings yield given up by issuing stock."}]},
+ {t:"Brain Teasers",qs:[
+  {q:"A bat and a ball cost $1.10 together. The bat costs $1.00 more than the ball. How much is the ball?",o:["$0.05","$0.10","$0.01","$0.15"],e:"If the ball is x, the bat is x + 1.00, so 2x + 1.00 = 1.10 and x = $0.05. At 10 cents, the bat would be $1.10 and the total $1.20."},
+  {q:"What's the angle between the hour and minute hands at 3:15?",o:["7.5°","0°","15°","22.5°"],e:"The minute hand is on the 3 (90°). The hour hand has moved a quarter of the way to the 4: 90° + 7.5°. The gap is 7.5°."}]}
+];
+const TOPIC_ORDER=["Accounting","Enterprise Value","Valuation","DCF","LBO","M&A","Brain Teasers"];
+const ADVICE={
+ "Accounting":"Learn the three-statement walk-throughs cold (depreciation, inventory, stock comp, deferred revenue). They're the most common first-round questions.",
+ "Enterprise Value":"Practice the equity value to enterprise value bridge and the \"what happens to EV if…\" scenarios until you can answer without pausing.",
+ "Valuation":"Know the three main methods, when each one comes out highest, and how to go from a multiple to a share price.",
+ "DCF":"Be able to walk through a DCF in under two minutes, and do unlevered free cash flow and terminal value math by hand.",
+ "LBO":"Learn the three return drivers and do paper LBOs until MOIC and rough IRR take you less than a minute.",
+ "M&A":"Learn the quick accretion and dilution tests: P/E comparison for stock deals, after-tax cost versus earnings yield for cash and debt.",
+ "Brain Teasers":"Practice talking through your reasoning out loud. Interviewers grade the process, not just the answer."
+};
+const LEVELS=[{min:0,name:"Not interview-ready yet",c:"l0",msg:"You'd struggle in a first round today, which is normal if you're early. The good news: the gaps are specific and learnable."},
+ {min:5,name:"Getting there",c:"l1",msg:"You have the basics in some areas, but an interviewer would find the holes quickly. Focus on your weakest topics below."},
+ {min:8,name:"First-round ready",c:"l2",msg:"You'd hold up in most first-round technicals. Superdays go deeper, with follow-ups and harder math, so keep pushing."},
+ {min:11,name:"Superday ready",c:"l3",msg:"Strong technical foundation. Now the difference is delivery: answering out loud, under pressure, with follow-ups."}];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2200);}
+let Q=null, idx=0, answers=[], started=0;
+let last=null; try{last=JSON.parse(localStorage.getItem("superday-quiz-last")||"null");}catch(e){}
+
+function build(){
+  Q=SLOTS.map(s=>{const q=s.qs[Math.floor(Math.random()*s.qs.length)];const opts=shuffle(q.o.map((text,k)=>({text,ok:k===0})));opts.push({text:"Not sure",ok:false,unsure:true});return {t:s.t,q:q.q,e:q.e,opts,correct:q.o[0]};});
+  idx=0; answers=[]; started=Date.now();
+}
+function intro(){
+  $("#app").innerHTML=`<section>
+    <span class="eyebrow">For students recruiting for investment banking</span>
+    <h1>Are you superday-ready?</h1>
+    <p class="lede">Twelve technical questions of the kind banks actually ask, from the three statements to a paper LBO. Get your level, your weakest topics and what to fix first.</p>
+    <div class="facts"><span>12 questions</span><span>About 5 minutes</span><span>Instant results</span><span>No sign-up</span></div>
+    <div class="row"><button class="btn primary" id="go">Start the quiz</button>${last?`<span class="hint">Last time: ${last.score}/12 · ${esc(last.level)}</span>`:""}</div>
+    <div class="topics">${TOPIC_ORDER.map(t=>`<div><b>${t}</b>${SLOTS.filter(s=>s.t===t).length} question${SLOTS.filter(s=>s.t===t).length>1?"s":""}</div>`).join("")}</div>
+  </section>`;
+  $("#go").onclick=()=>{build();question();};
+}
+function question(){
+  const q=Q[idx], a=answers[idx];
+  $("#app").innerHTML=`<section>
+    <div class="prog"><span class="eyebrow">Question ${idx+1} of ${Q.length} · ${esc(q.t)}</span><span class="hint">${answers.filter(x=>x&&x.ok).length} correct so far</span></div>
+    <div class="bar"><i style="width:${(idx+(a?1:0))/Q.length*100}%"></i></div>
+    <p class="q">${esc(q.q)}</p>
+    <div class="opts" role="group" aria-label="Answer choices">${q.opts.map((o,k)=>{
+      let cls=o.unsure?"opt unsure":"opt";
+      if(a){if(o.ok)cls+=" right";else if(a.pick===k)cls+=" wrong";}
+      return `<button class="${cls}" data-k="${k}" ${a?"disabled":""}><kbd>${k+1}</kbd><span>${esc(o.text)}</span></button>`;}).join("")}</div>
+    ${a?`<div class="explain ${a.ok?"":"miss"}" role="status"><b>${a.ok?"Correct.":a.unsure?"The answer is: "+esc(q.correct):"Not quite. The answer is: "+esc(q.correct)}</b>${esc(q.e)}</div>
+      <div class="row" style="margin-top:18px"><button class="btn primary" id="next">${idx+1<Q.length?"Next question":"See my results"}</button><span class="hint">or press Enter</span></div>`:""}
+  </section>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+  const n=$("#next"); if(n){n.onclick=next;n.focus();}
+}
+function pick(k){if(answers[idx])return;const o=Q[idx].opts[k];answers[idx]={pick:k,ok:o.ok,unsure:!!o.unsure};question();}
+function next(){if(idx+1<Q.length){idx++;question();scrollTo({top:0});}else result();}
+addEventListener("keydown",e=>{
+  if(!Q||!$(".opts"))return;
+  if(!answers[idx]&&/^[1-5]$/.test(e.key)){const k=+e.key-1;if(k<Q[idx].opts.length)pick(k);}
+  else if(answers[idx]&&e.key==="Enter"&&document.activeElement?.id!=="next"){e.preventDefault();next();}
+});
+function result(){
+  const score=answers.filter(a=>a.ok).length, unsure=answers.filter(a=>a.unsure).length;
+  const L=[...LEVELS].reverse().find(l=>score>=l.min), li=LEVELS.indexOf(L);
+  const mins=Math.max(1,Math.round((Date.now()-started)/6e4));
+  const by=TOPIC_ORDER.map(t=>{const ix=Q.map((q,i)=>i).filter(i=>Q[i].t===t);const ok=ix.filter(i=>answers[i].ok).length;return {t,ix,ok,n:ix.length,r:ok/ix.length};});
+  const strong=by.filter(x=>x.r===1).map(x=>x.t), gaps=by.filter(x=>x.r<.5).map(x=>x.t);
+  const weakest=[...by].sort((a,b)=>a.r-b.r||b.n-a.n).filter(x=>x.r<1).slice(0,3);
+  try{localStorage.setItem("superday-quiz-last",JSON.stringify({score,level:L.name,at:Date.now()}));}catch(e){}
+  const shareText=`I scored ${score}/12 on the Superday Readiness Quiz: ${L.name}.${strong.length?" Strongest: "+strong.slice(0,2).join(", ")+".":""}${weakest.length?" Working on: "+weakest.slice(0,2).map(x=>x.t).join(", ")+".":""}`;
+  const missed=Q.map((q,i)=>({q,a:answers[i]})).filter(x=>!x.a.ok);
+  $("#app").innerHTML=`<section class="result">
+    <span class="eyebrow">Your result</span>
+    <div class="big"><b>${score}<small>/12</small></b><span class="level ${L.c}">${L.name}</span></div>
+    <p style="max-width:58ch">${L.msg}</p>
+    <div class="ladder" aria-label="Level scale">${LEVELS.map((l,k)=>`<div class="${k===li?"on":""}">${l.name}<br><span class="hint">${k<3?l.min+"–"+(LEVELS[k+1].min-1):l.min+"–12"}</span></div>`).join("")}</div>
+
+    <div class="section"><h3>By topic</h3><div class="tlist">${by.map(x=>`<div class="trow"><span>${x.t}</span><span class="pips" aria-label="${x.ok} of ${x.n} correct">${x.ix.map(i=>`<i class="${answers[i].ok?"ok":"no"}"></i>`).join("")}</span><span class="tag ${x.r===1?"s":x.r>=.5?"m":"g"}">${x.r===1?"Strong":x.r>=.5?"Shaky":"Gap"}</span></div>`).join("")}</div>
+      ${unsure?`<p class="hint">You picked "Not sure" ${unsure} time${unsure>1?"s":""}. That's the honest move here. In a real interview, reason out loud instead: partial logic earns more credit than silence.</p>`:""}</div>
+
+    ${weakest.length?`<div class="section"><h3>Fix first</h3><ul class="fix">${weakest.map(x=>`<li><b>${x.t}</b>${ADVICE[x.t]}</li>`).join("")}</ul></div>`:`<div class="section"><h3>What's next</h3><p>A perfect score on multiple choice is a great start. Real interviews are open-ended and come with follow-ups, so practice answering out loud.</p></div>`}
+
+    ${missed.length?`<div class="section"><h3>Review what you missed</h3>${missed.map(({q})=>`<details class="miss"><summary>${esc(q.q)}</summary><div class="body"><span><b>Answer:</b> ${esc(q.correct)}</span><span>${esc(q.e)}</span></div></details>`).join("")}</div>`:""}
+
+    <div class="section"><div class="row"><button class="btn" id="share">Copy my result</button><button class="btn" id="again">Retake with new questions</button><span class="hint">Took about ${mins} min</span></div>
+      <textarea id="shareBox" readonly hidden></textarea></div>
+
+    <div class="cta">
+      <h2>Close the gaps before your superday</h2>
+      <p>Superday Prep gives you 400 interview questions on a spaced-repetition schedule, a full superday simulation with AI interviewers and a scorecard, and a networking tracker that turns your alumni calls into interview answers.</p>
+      <a class="btn primary" href="${CTA_URL}">Start free</a>
+    </div>
+  </section>`;
+  $("#again").onclick=()=>{build();question();scrollTo({top:0});};
+  $("#share").onclick=async()=>{try{await navigator.clipboard.writeText(shareText);toast("Result copied");}catch(e){const b=$("#shareBox");b.hidden=false;b.value=shareText;b.select();toast("Select the text and copy it");}};
+  scrollTo({top:0});
+}
+intro();
+</script>
+</body>
+</html>

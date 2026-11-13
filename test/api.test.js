@@ -146,6 +146,22 @@ test("prompt building: fields are capped and validated", () => {
   assert.equal(costUsd("claude-opus-5-5", 1_000_000, 1_000_000), 24);
 });
 
+test("story bank and coach prompts: grounded in what the student sent", async () => {
+  const s = await request(app).post("/api/ai").set(as("sky")).send({ feature: "star_story", params: { title: "Pitch model", category: "Finance club", raw: "Two weeks before the competition our team had no model. I built the DCF and we placed second of twelve." } }).expect(200);
+  assert.match(ai.lastPrompt, /Use ONLY what they wrote/);
+  assert.match(ai.lastPrompt, /f40: Tell me about a time you failed/);
+  assert.equal(s.body.data.strength, 3);
+  assert.deepEqual(FEATURES.star_story.clean({ questions: ["f5", "zzz", "f40"], strength: 9 }).questions, ["f5", "f40"]);
+  const c = await request(app).post("/api/ai").set(as("sky")).send({ feature: "coach", params: { snapshot: "Interview readiness: 35%. Weakest: LBO 25%.", messages: [{ role: "user", content: "Hi" }, { role: "coach", content: "Hello" }, { role: "user", content: "What should I work on?" }] } }).expect(200);
+  assert.ok(c.body.data.text.length > 10);
+  assert.match(ai.lastPrompt, /Weakest: LBO 25%/);
+  assert.match(ai.lastPrompt, /Coach: Hello\n/);
+  assert.match(ai.lastPrompt, /Student: What should I work on\?/);
+  await request(app).post("/api/ai").set(as("sky")).send({ feature: "coach", params: { messages: [{ role: "coach", content: "only me" }] } }).expect(400);
+  const q = await request(app).get("/api/questions").set(as("sky")).expect(200);
+  assert.equal(q.body.behavioral.length, 15);
+});
+
 test("billing: checkout, then the webhook upgrades and later downgrades the user", async () => {
   const c = await request(app).post("/api/billing/checkout").set(as("dana")).expect(200);
   assert.match(c.body.url, /checkout/);

@@ -29,7 +29,7 @@ async function flush(){
   saving=true; saveEl.textContent="Saving...";
   try{
     const savePrep=dbRefs.prep.set({cards:S.cards, reviewLog:S.reviewLog, newLog:S.newLog||{}, mockHist:S.mockHist.slice(0,40), simHist:(S.simHist||[]).slice(0,20), readyLog:S.readyLog||{}, peerHist:(S.peerHist||[]).slice(0,20), updated:Date.now()});
-    const saveNet=dbRefs.net.set({contacts:S.contacts, settings:S.settings, firms:S.firms||{}, tlChecks:S.tlChecks||{}, story:S.story||{}, apps:S.apps||[], updated:Date.now()});
+    const saveNet=dbRefs.net.set({contacts:S.contacts, settings:S.settings, firms:S.firms||{}, tlChecks:S.tlChecks||{}, story:S.story||{}, apps:S.apps||[], stories:S.stories||[], updated:Date.now()});
     // saved separately, so a conflict on one doesn't drop changes to the other
     if((await Promise.allSettled([savePrep,saveNet])).some(r=>r.status==="rejected"))throw new Error("save failed");
     saveEl.textContent="Saved to your account";
@@ -48,7 +48,7 @@ async function flush(){
     const [p,n]=await Promise.race([Promise.all([refs.prep.get(),refs.net.get()]),timeout]);
     const pd=p.data(), nd=n.data();
     if(pd){S.cards=pd.cards||{};S.reviewLog=pd.reviewLog||{};S.newLog=pd.newLog||{};S.mockHist=pd.mockHist||[];S.simHist=pd.simHist||[];S.readyLog=pd.readyLog||{};S.peerHist=pd.peerHist||[];}
-    if(nd){S.contacts=nd.contacts||[];S.settings=nd.settings||{};S.firms=nd.firms||{};S.tlChecks=nd.tlChecks||{};S.story=nd.story||{};S.apps=nd.apps||[];}
+    if(nd){S.contacts=nd.contacts||[];S.settings=nd.settings||{};S.firms=nd.firms||{};S.tlChecks=nd.tlChecks||{};S.story=nd.story||{};S.apps=nd.apps||[];S.stories=nd.stories||[];}
     dbRefs=refs;
     if(!pd||!nd) flush(); else saveEl.textContent="Saved to your account";
     lsWrite(); renderAll(); maybeOnboard();
@@ -71,7 +71,7 @@ async function copy(text){try{await navigator.clipboard.writeText(text);toast("C
 const SECTIONS=[
   {label:"Dashboard",views:[["dashboard","Dashboard"]]},
   {label:"Academy",views:[["drill","Technicals drill"]]},
-  {label:"Interview Lab",views:[["superday","Superday simulation"],["mock","Mock interview"],["story","Your story"]]},
+  {label:"Interview Lab",views:[["superday","Superday simulation"],["mock","Mock interview"],["story","Resume story"],["stories","Story bank"]]},
   {label:"Networking",views:[["network","Contacts"],["firms","Firm prep"]]},
   {label:"Recruiting HQ",views:[["apps","Applications"],["timeline","Timeline"]]},
   {label:"Community",views:[["club","Club leaderboard"]]},
@@ -86,4 +86,4 @@ function route(){
   sub.innerHTML=sec.views.map(([id,label])=>`<a href="#${id}" ${id===v?'aria-current="page"':""}>${label}</a>`).join("");
   return v;
 }
-addEventListener("hashchange",()=>{const v=route();if(v==="timeline")renderTimeline();if(v==="dashboard")renderDash();if(v==="apps")renderApps();scrollTo({top:0});});
+addEventListener("hashchange",()=>{const v=route();if(v==="timeline")renderTimeline();if(v==="dashboard")renderDash();if(v==="apps")renderApps();if(v==="stories")renderStories();scrollTo({top:0});});

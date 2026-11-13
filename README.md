@@ -8,12 +8,12 @@ Investment banking interview prep for students recruiting from non-target school
 |---|---|
 | Dashboard | Today's plan (built from what's due, what's weak and what's coming up), interview readiness, countdowns, weekly report |
 | Academy | Technicals drill with spaced repetition, superday countdown and readiness breakdown |
-| Interview Lab | Superday simulation, mock interview (AI or with a friend), resume story |
+| Interview Lab | Superday simulation, mock interview (AI or with a friend), resume story, behavioral story bank (STAR answers, question coverage, timed run-throughs) |
 | Networking | Contacts and email drafts, firm prep pages |
 | Recruiting HQ | Application tracker, 30-day agenda, interview prep workspaces, recruiting timeline |
 | Community | Finance club leaderboard |
 
-The dashboard and Recruiting HQ are computed from saved activity; they make no AI calls.
+The **AI coach** is available on every page. It answers from a summary of the student's saved progress, calendar and applications that their browser builds; the resume and call notes are included only if the student ticks the box. The dashboard and Recruiting HQ are computed from saved activity; they make no AI calls.
 
 ## How it's built
 

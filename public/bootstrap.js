@@ -131,7 +131,7 @@
   }
 
   /* ---------- founder stats (admins only; totals, never anyone's private data) ---------- */
-  const FEATURE_NAMES = { grade: "Mock interview grading", sim_grade: "Superday answer grading", sim_followup: "Superday follow-ups", sim_debrief: "Superday debriefs", call_prep: "Call prep", why_firm: "Why-this-firm drafts", story: "Resume stories" };
+  const FEATURE_NAMES = { grade: "Mock interview grading", sim_grade: "Superday answer grading", sim_followup: "Superday follow-ups", sim_debrief: "Superday debriefs", call_prep: "Call prep", why_firm: "Why-this-firm drafts", story: "Resume stories", star_story: "Story bank answers", coach: "AI coach" };
   async function openAdmin() {
     const box = $("#adminBody"); box.innerHTML = '<p class="hint">Loading...</p>'; $("#adminDlg").showModal();
     try {
@@ -250,7 +250,7 @@
     let bank;
     try { ME = await api("/api/me"); bank = await api("/api/questions"); }
     catch (e) { showAuth(e.status === 401 ? "" : "We couldn't reach the server. Reload to try again."); return; }
-    window.__ME = ME; window.__BANK = bank.questions; window.__BANK_TOTAL = bank.total;
+    window.__ME = ME; window.__BANK = bank.questions; window.__BANK_TOTAL = bank.total; window.__BEHAV = bank.behavioral || [];
     window.claude = { use: async (name) => ({ sample: ai, db, user }[name] || null) };
     $("#authScreen").hidden = true; $("#appShell").hidden = false;
     renderAcct();

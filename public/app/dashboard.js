@@ -49,6 +49,8 @@ function todaysPlan(){
   const mocksToday=(S.mockHist||[]).filter(h=>h.at>=today().getTime()).length;
   add(5,10,mocksToday>=2?`Mock answers done (${mocksToday} today)`:`Answer ${2-mocksToday} mock question${2-mocksToday===1?"":"s"} out loud`,"mock",mocksToday>=2);
   if(!(S.story&&S.story.story))add(6,15,"Build your resume walk-through","story");
+  const nStories=(S.stories||[]).filter(s=>s.short||s.situation).length;
+  if(nStories<3)add(6,15,nStories?`Add another behavioral story (${nStories} of 5 so far)`:"Add your first behavioral story","stories");
   const lastSim=(S.simHist||[])[0];
   if(isPro()&&Object.keys(S.cards).length>=30&&(!lastSim||now-lastSim.at>7*DAY))add(6,25,"Run a superday simulation (none this week)","superday");
   if(!S.contacts.length)add(7,10,"Add three alumni to reach out to","network");

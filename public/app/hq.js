@@ -37,6 +37,7 @@ function workspaceHtml(a){
     {ok:(info.whyUs||"").length>50,t:`"Why ${esc(a.firm)}?" answer written`,note:info.whyUs?"":"Built from your call notes in Firm prep",act:"firm",btn:"Open firm prep"},
     {ok:people.some(c=>c.notes),t:`Spoken with someone at ${esc(a.firm)}`,note:`${people.length} contact${people.length===1?"":"s"}, ${people.filter(c=>c.notes).length} with call notes`,act:"firm",btn:"See contacts"},
     {ok:!!(S.story&&S.story.story),t:"Resume walk-through ready",note:(S.story&&S.story.rehearsals||[]).length?`${S.story.rehearsals.length} timed run-through${S.story.rehearsals.length===1?"":"s"}`:"Not rehearsed yet",act:"story",btn:"Open your story"},
+    {ok:(S.stories||[]).filter(s=>s.short||s.situation).length>=3,t:"Three or more behavioral stories ready",note:`${(S.stories||[]).filter(s=>s.short||s.situation).length} in your story bank`,act:"stories",btn:"Open story bank"},
     {ok:r.score>=65,t:`Technicals at first-round level (${r.score}% ready)`,note:a.interviewDate&&S.settings.superday!==a.interviewDate?"Your study plan isn't set to this date":"Study plan is set to this date",act:a.interviewDate&&S.settings.superday!==a.interviewDate?"plan":"drill",btn:a.interviewDate&&S.settings.superday!==a.interviewDate?"Plan my studying for this date":"Open drill"},
     {ok:!!recentSim,t:`Superday simulation for ${esc(a.firm)}`,note:recentSim?`Scored ${recentSim.overall.toFixed(1)}/10 on ${fmtDay(new Date(recentSim.at))}`:"None in the last two weeks",act:"sim",btn:"Run a simulation",pro:true},
     {ok:(info.ask||[]).length>0,t:"Questions to ask your interviewers",note:(info.ask||[]).slice(0,1).join("")||"Drafted with your Why-this-firm answer",act:"firm",btn:"Open firm prep"},
@@ -123,6 +124,7 @@ $("#appsRoot").addEventListener("click",e=>{
   else if(act==="ws"&&a){
     if(arg==="firm"){finfo(a.firm);selFirm=a.firm;prepOpen=null;save();renderFirms();location.hash="#firms";}
     else if(arg==="story")location.hash="#story";
+    else if(arg==="stories")location.hash="#stories";
     else if(arg==="drill")location.hash="#drill";
     else if(arg==="plan"){S.settings.superday=a.interviewDate;extraNew=0;Object.keys(S.cards).forEach(id=>S.cards[id]=capped(S.cards[id]));save();renderDrill();renderApps();renderDash();toast("Study plan set to "+fmtDay(parseIso(a.interviewDate)));}
     else if(arg==="sim"){

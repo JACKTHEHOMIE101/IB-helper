@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { createStore, ConflictError } from "./lib/store.js";
 import { createVerifier, deleteAuthUser } from "./lib/auth.js";
 import { createAI, RefusalError, costUsd } from "./lib/ai.js";
-import { FEATURES, InputError, parseJSON } from "./lib/prompts.js";
+import { FEATURES, InputError, parseJSON, BEHAVIORAL } from "./lib/prompts.js";
 import { createBilling, applyStripeEvent } from "./lib/billing.js";
 import { planLimits, aiAllowance, isPro } from "./lib/plans.js";
 import { BANK, CORE } from "./data/questions.js";
@@ -126,7 +126,7 @@ export function createApp({ store, verifyToken, ai, billing, env = process.env, 
 
   /* ---- questions: the core set on Free, the whole bank on Pro ---- */
   api.get("/questions", (req, res) => {
-    res.set("Cache-Control", "private, no-store").json({ questions: isPro(req.user) ? BANK : CORE_BANK, total: BANK.length });
+    res.set("Cache-Control", "private, no-store").json({ questions: isPro(req.user) ? BANK : CORE_BANK, total: BANK.length, behavioral: BEHAVIORAL });
   });
 
   /* ---- private saved progress ---- */
@@ -230,7 +230,7 @@ export function createApp({ store, verifyToken, ai, billing, env = process.env, 
   app.use("/api", api);
 
   // The app's section files are joined, in this order, into one script. They share one scope and must run together.
-  const APP_FILES = ["core", "drill", "mock", "network", "superday", "firms", "timeline", "story", "peer", "club", "hq", "dashboard", "main"];
+  const APP_FILES = ["core", "drill", "mock", "network", "superday", "firms", "timeline", "story", "peer", "club", "hq", "stories", "coach", "dashboard", "main"];
   const buildApp = () => APP_FILES.map((f) => fs.readFileSync(new URL(`./public/app/${f}.js`, import.meta.url), "utf8")).join("\n");
   let appBundle = buildApp();
   app.get("/app.js", (req, res) => {

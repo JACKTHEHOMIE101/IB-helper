@@ -306,6 +306,25 @@ table.board tr.me td.sorted{background:var(--accent-soft)}
 .wslist li div{display:flex;flex-direction:column;min-width:0}
 @media (max-width:720px){.dashgrid{grid-template-columns:minmax(0,1fr)}.pipe8{grid-template-columns:repeat(4,minmax(0,1fr))}.pipe8 button:nth-child(5){border-left:0}.pipe8 button:nth-child(n+5){border-top:1px solid var(--line)}
   .plan li{grid-template-columns:22px minmax(0,1fr) auto}.plan .pmin{display:none}.appRow{grid-template-columns:minmax(0,1fr)}.wslist li{grid-template-columns:22px minmax(0,1fr)}.wslist li .btn{grid-column:2;justify-self:start}.agenda li{grid-template-columns:4.4em minmax(0,1fr)}}
+.coachfab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;font:600 .9rem var(--body);background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:11px 18px;cursor:pointer;box-shadow:0 4px 14px rgba(10,18,15,.25)}
+.coachfab:hover{filter:brightness(1.15)}
+.coachfab:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+dialog.coach{margin:0 0 0 auto;height:100%;max-height:100%;width:min(440px,100vw);border-radius:0;border-width:0 0 0 1px;padding:0}
+.coach-in{display:flex;flex-direction:column;gap:12px;height:100%;padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+.coach-msgs{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.cmsg p{margin:2px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.cmsg.user{align-self:flex-end;max-width:88%;background:var(--accent-soft);border-radius:8px;padding:8px 12px}
+.cmsg.coach{max-width:96%}
+.dots5{display:inline-flex;gap:4px}.dots5 i{width:14px;height:14px;border-radius:50%;background:var(--sunk);border:1px solid var(--line)}.dots5 i.on{background:var(--accent);border-color:var(--accent)}
+.qmap,.cov{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.qmap li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.qmap li:first-child,.cov li:first-child{border-top:0}
+.qmap input{width:auto}.qmap label{margin:0;font-weight:400;font-size:.92rem;color:var(--ink)}
+.cov li{display:flex;flex-direction:column;padding:7px 0;border-top:1px solid var(--line);font-size:.88rem}
+.cov li.gap>span:first-child{color:var(--amber)}
+.storyRow{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto}
+.wrap{padding-bottom:88px}
+@media (max-width:720px){.storyRow{grid-template-columns:minmax(0,1fr) auto}.storyRow .dates{grid-column:1/-1;order:3}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .choice{border:0;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .choice legend{font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:6px;padding:0}
@@ -376,6 +395,9 @@ details.qa summary:focus-visible{outline:2px solid var(--accent);outline-offset:
 
   <!-- DASHBOARD -->
   <section id="v-dashboard" data-panel="dashboard" hidden><div id="dashRoot"></div></section>
+
+  <!-- STORY BANK -->
+  <section id="v-stories" data-panel="stories" hidden><div id="storiesRoot"></div></section>
 
   <!-- RECRUITING HQ: APPLICATIONS -->
   <section id="v-apps" data-panel="apps" hidden><div id="appsRoot"></div></section>
@@ -555,6 +577,21 @@ details.qa summary:focus-visible{outline:2px solid var(--accent);outline-offset:
     </ul>
     <p style="margin:0"><b id="payPrice"></b> · cancel anytime</p>
     <div class="row" style="justify-content:flex-end"><button class="btn" id="payClose" type="button">Not now</button><button class="btn primary" id="payGo" type="button">Upgrade</button></div>
+  </div>
+</dialog>
+
+<button id="coachFab" class="coachfab" hidden aria-haspopup="dialog">Ask your coach</button>
+<dialog id="coachDlg" class="coach">
+  <div class="coach-in">
+    <div class="row" style="justify-content:space-between"><div><span class="eyebrow">AI banking coach</span><h2 style="margin-top:2px">Your coach</h2></div>
+      <div class="row"><button class="linkbtn" id="coachClear" type="button">Clear chat</button><button class="btn sm" id="coachClose" type="button">Close</button></div></div>
+    <div id="coachMsgs" class="coach-msgs" aria-live="polite"></div>
+    <form id="coachForm" class="stack" style="gap:8px">
+      <label for="coachInput" class="sr">Your question</label>
+      <textarea id="coachInput" rows="2" style="min-height:56px" maxlength="1500" placeholder="Ask about a technical, your prep, or what to do next"></textarea>
+      <div class="row" style="justify-content:space-between"><label style="display:flex;gap:6px;align-items:center;margin:0;font-weight:400"><input type="checkbox" id="coachShare" style="width:auto"> Let the coach read my resume and call notes</label><button class="btn primary" id="coachSend" type="submit">Ask</button></div>
+      <p class="hint" style="margin:0">Each question uses 1 AI credit. The coach sees a summary of your progress, calendar and applications. AI answers can be wrong, so check anything important.</p>
+    </form>
   </div>
 </dialog>
 

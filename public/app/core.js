@@ -29,7 +29,7 @@ async function flush(){
   saving=true; saveEl.textContent="Saving...";
   try{
     const savePrep=dbRefs.prep.set({cards:S.cards, reviewLog:S.reviewLog, newLog:S.newLog||{}, mockHist:S.mockHist.slice(0,40), simHist:(S.simHist||[]).slice(0,20), readyLog:S.readyLog||{}, peerHist:(S.peerHist||[]).slice(0,20), updated:Date.now()});
-    const saveNet=dbRefs.net.set({contacts:S.contacts, settings:S.settings, firms:S.firms||{}, tlChecks:S.tlChecks||{}, story:S.story||{}, updated:Date.now()});
+    const saveNet=dbRefs.net.set({contacts:S.contacts, settings:S.settings, firms:S.firms||{}, tlChecks:S.tlChecks||{}, story:S.story||{}, apps:S.apps||[], updated:Date.now()});
     // saved separately, so a conflict on one doesn't drop changes to the other
     if((await Promise.allSettled([savePrep,saveNet])).some(r=>r.status==="rejected"))throw new Error("save failed");
     saveEl.textContent="Saved to your account";
@@ -48,7 +48,7 @@ async function flush(){
     const [p,n]=await Promise.race([Promise.all([refs.prep.get(),refs.net.get()]),timeout]);
     const pd=p.data(), nd=n.data();
     if(pd){S.cards=pd.cards||{};S.reviewLog=pd.reviewLog||{};S.newLog=pd.newLog||{};S.mockHist=pd.mockHist||[];S.simHist=pd.simHist||[];S.readyLog=pd.readyLog||{};S.peerHist=pd.peerHist||[];}
-    if(nd){S.contacts=nd.contacts||[];S.settings=nd.settings||{};S.firms=nd.firms||{};S.tlChecks=nd.tlChecks||{};S.story=nd.story||{};}
+    if(nd){S.contacts=nd.contacts||[];S.settings=nd.settings||{};S.firms=nd.firms||{};S.tlChecks=nd.tlChecks||{};S.story=nd.story||{};S.apps=nd.apps||[];}
     dbRefs=refs;
     if(!pd||!nd) flush(); else saveEl.textContent="Saved to your account";
     lsWrite(); renderAll(); maybeOnboard();
@@ -67,10 +67,23 @@ function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTi
 async function copy(text){try{await navigator.clipboard.writeText(text);toast("Copied");}catch(e){const r=document.createRange();r.selectNodeContents($("#emOut"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Selected. Press Ctrl/Cmd+C to copy");}}
 
 /* ---------- Routing ---------- */
-const VIEWS=["drill","superday","story","mock","network","firms","timeline","club"];
+// Top-level sections and the pages inside each. A page's id is also its #link.
+const SECTIONS=[
+  {label:"Dashboard",views:[["dashboard","Dashboard"]]},
+  {label:"Academy",views:[["drill","Technicals drill"]]},
+  {label:"Interview Lab",views:[["superday","Superday simulation"],["mock","Mock interview"],["story","Your story"]]},
+  {label:"Networking",views:[["network","Contacts"],["firms","Firm prep"]]},
+  {label:"Recruiting HQ",views:[["apps","Applications"],["timeline","Timeline"]]},
+  {label:"Community",views:[["club","Club leaderboard"]]},
+];
+const VIEWS=SECTIONS.flatMap(s=>s.views.map(v=>v[0]));
 function route(){
-  const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"drill";
+  const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"dashboard";
   document.querySelectorAll("[data-panel]").forEach(p=>p.hidden=p.dataset.panel!==v);
-  document.querySelectorAll("nav.tabs a").forEach(a=>{if(a.dataset.view===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
+  const sec=SECTIONS.find(s=>s.views.some(x=>x[0]===v));
+  $("#mainNav").innerHTML=SECTIONS.map(s=>`<a href="#${s.views[0][0]}" ${s===sec?'aria-current="page"':""}>${s.label}</a>`).join("");
+  const sub=$("#subNav"); sub.hidden=sec.views.length<2;
+  sub.innerHTML=sec.views.map(([id,label])=>`<a href="#${id}" ${id===v?'aria-current="page"':""}>${label}</a>`).join("");
+  return v;
 }
-addEventListener("hashchange",()=>{route();if(location.hash==="#timeline")renderTimeline();});
+addEventListener("hashchange",()=>{const v=route();if(v==="timeline")renderTimeline();if(v==="dashboard")renderDash();if(v==="apps")renderApps();scrollTo({top:0});});

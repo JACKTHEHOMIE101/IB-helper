@@ -33,7 +33,14 @@ header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:spac
 .brand h1{font:700 2rem/1 var(--display);letter-spacing:-.01em;margin:0;text-wrap:balance}
 .brand p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
 .save{font:500 .75rem var(--mono);color:var(--muted);letter-spacing:.02em}
-nav.tabs{display:flex;gap:4px;margin:16px 0 20px;flex-wrap:wrap}
+nav.tabs{display:flex;gap:4px;margin:16px 0 12px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs a{white-space:nowrap}
+nav.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+nav.subtabs a{font:500 .85rem var(--body);color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--line);border-radius:999px}
+nav.subtabs a[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+nav.subtabs a:hover{color:var(--ink)}
+nav.subtabs a[aria-current="page"]:hover{color:var(--bg)}
+nav.tabs+section,nav.subtabs+section{margin-top:8px}
 nav.tabs a{font:600 .95rem var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:8px 14px;border:1px solid transparent;border-radius:4px}
 nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--surface);border-color:var(--line)}
 nav.tabs a:hover{color:var(--ink)}
@@ -266,6 +273,39 @@ table.board tr.me td.sorted{background:var(--accent-soft)}
 .auth ul{margin:0;padding-left:18px;color:var(--muted);font-size:.92rem;display:flex;flex-direction:column;gap:4px}
 .paylist{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
 @media (max-width:720px){.acct{justify-content:flex-start}}
+.dashgrid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+.plan{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.plan li{display:grid;grid-template-columns:22px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.plan li:first-child{border-top:0}
+.plan li.done .ptext{color:var(--muted);text-decoration:line-through}
+.wsmark{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.7rem;font-weight:700;color:var(--accent-ink)}
+.done>.wsmark,.ok>.wsmark{background:var(--accent);border-color:var(--accent)}
+.pmin{white-space:nowrap}
+.dtopics .trow{grid-template-columns:8.5em minmax(0,1fr) 3em;gap:0 10px}
+.agenda{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.agenda li{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.agenda li:first-child{border-top:0}
+.agenda li div{display:flex;flex-direction:column;min-width:0}
+.agenda a{color:var(--ink);text-decoration:none}
+.agenda a:hover{text-decoration:underline}
+.adate{font:500 .78rem var(--mono);color:var(--muted)}
+.adate.soon,.cdn.soon{color:var(--amber)}.adate.late{color:var(--red)}
+.cdn{font:600 1.5rem/1 var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+.cdn small{display:block;font:500 .65rem var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.wk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.wk div{padding:10px 12px;border-left:1px solid var(--line);border-top:1px solid var(--line);margin:-1px 0 0 -1px;display:flex;flex-direction:column;gap:1px}
+.wk b{font:500 1.3rem/1.1 var(--mono);font-variant-numeric:tabular-nums}
+.wk span{font-size:.75rem;color:var(--muted)}
+.wk .dl{font:500 .68rem var(--mono)}.wk .dl.up{color:var(--accent)}.wk .dl.down{color:var(--red)}
+.pipe8{grid-template-columns:repeat(8,minmax(0,1fr))}
+.appRow{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto}
+.ws{border-color:var(--accent);margin-bottom:16px}
+.wslist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.wslist li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.wslist li:first-child{border-top:0}
+.wslist li div{display:flex;flex-direction:column;min-width:0}
+@media (max-width:720px){.dashgrid{grid-template-columns:minmax(0,1fr)}.pipe8{grid-template-columns:repeat(4,minmax(0,1fr))}.pipe8 button:nth-child(5){border-left:0}.pipe8 button:nth-child(n+5){border-top:1px solid var(--line)}
+  .plan li{grid-template-columns:22px minmax(0,1fr) auto}.plan .pmin{display:none}.appRow{grid-template-columns:minmax(0,1fr)}.wslist li{grid-template-columns:22px minmax(0,1fr)}.wslist li .btn{grid-column:2;justify-self:start}.agenda li{grid-template-columns:4.4em minmax(0,1fr)}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .choice{border:0;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .choice legend{font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:6px;padding:0}
@@ -327,20 +367,18 @@ details.qa summary:focus-visible{outline:2px solid var(--accent);outline-offset:
   <header class="top">
     <div class="brand">
       <h1>Superday Prep</h1>
-      <p>IB technicals and alumni networking for students recruiting from non-target schools.</p>
+      <p>From student to investment banker.</p>
     </div>
     <div class="hdr-right"><div id="acct" class="acct"></div><div class="hdr-count" id="hdrReady"></div><div class="hdr-count" id="hdrCount"></div><div class="save" id="saveState">Saved in this browser</div></div>
   </header>
-  <nav class="tabs" aria-label="Sections">
-    <a href="#drill" data-view="drill">Technicals drill</a>
-    <a href="#superday" data-view="superday">Superday sim</a>
-    <a href="#story" data-view="story">Your story</a>
-    <a href="#mock" data-view="mock">Mock interview</a>
-    <a href="#network" data-view="network">Networking</a>
-    <a href="#firms" data-view="firms">Firm prep</a>
-    <a href="#timeline" data-view="timeline">Timeline</a>
-    <a href="#club" data-view="club">Club</a>
-  </nav>
+  <nav class="tabs" id="mainNav" aria-label="Sections"></nav>
+  <nav class="subtabs" id="subNav" aria-label="Pages in this section" hidden></nav>
+
+  <!-- DASHBOARD -->
+  <section id="v-dashboard" data-panel="dashboard" hidden><div id="dashRoot"></div></section>
+
+  <!-- RECRUITING HQ: APPLICATIONS -->
+  <section id="v-apps" data-panel="apps" hidden><div id="appsRoot"></div></section>
 
   <!-- DRILL -->
   <section id="v-drill" data-panel="drill">
@@ -518,6 +556,26 @@ details.qa summary:focus-visible{outline:2px solid var(--accent);outline-offset:
     <p style="margin:0"><b id="payPrice"></b> · cancel anytime</p>
     <div class="row" style="justify-content:flex-end"><button class="btn" id="payClose" type="button">Not now</button><button class="btn primary" id="payGo" type="button">Upgrade</button></div>
   </div>
+</dialog>
+
+<dialog id="appDlg">
+  <form id="appForm" class="stack" method="dialog">
+    <h2 id="appDlgTitle">Add application</h2>
+    <div class="grid2">
+      <div><label for="apFirm">Firm</label><input id="apFirm" required list="apFirms" placeholder="William Blair" maxlength="80"><datalist id="apFirms"></datalist></div>
+      <div><label for="apRole">Role</label><input id="apRole" placeholder="Summer Analyst" maxlength="80"></div>
+      <div><label for="apOffice">Office</label><input id="apOffice" placeholder="Chicago" maxlength="60"></div>
+      <div><label for="apTier">How much you want it</label><select id="apTier"></select></div>
+      <div><label for="apStage">Stage</label><select id="apStage"></select></div>
+      <div><label for="apDeadline">Application deadline</label><input id="apDeadline" type="date"></div>
+      <div><label for="apApplied">Date applied</label><input id="apApplied" type="date"></div>
+      <div><label for="apIvDate">Interview date</label><input id="apIvDate" type="date"></div>
+      <div><label for="apIvType">Interview type</label><select id="apIvType"><option>First Round</option><option>Superday</option></select></div>
+    </div>
+    <div><label for="apNotes">Notes</label><textarea id="apNotes" style="min-height:70px" placeholder="Applied through the careers page; Priya passed my resume along." maxlength="2000"></textarea></div>
+    <div class="row" style="justify-content:space-between"><button type="button" class="btn" id="apDelete" style="color:var(--red)">Delete</button>
+      <div class="row"><button type="button" class="btn" id="apCancel">Cancel</button><button type="submit" class="btn primary">Save</button></div></div>
+  </form>
 </dialog>
 
 <dialog id="acctDlg">

@@ -14,5 +14,5 @@ function maybeOnboard(){
     if(name&&window.__setName)window.__setName(name);
     done(); toast("You're set up. Start with today's drill questions");};
 }
-function renderAll(){renderDrill();renderHist();renderNetwork();renderSim();renderFirms();renderTimeline();renderStory();setMockMode(mockMode);renderBoard();}
+function renderAll(){renderDrill();renderHist();renderNetwork();renderSim();renderFirms();renderTimeline();renderStory();setMockMode(mockMode);renderBoard();renderApps();renderDash();}
 route(); pickMock(); renderAll();

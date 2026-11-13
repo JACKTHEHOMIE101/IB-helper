@@ -230,7 +230,7 @@ export function createApp({ store, verifyToken, ai, billing, env = process.env, 
   app.use("/api", api);
 
   // The app's section files are joined, in this order, into one script. They share one scope and must run together.
-  const APP_FILES = ["core", "drill", "mock", "network", "superday", "firms", "timeline", "story", "peer", "club", "main"];
+  const APP_FILES = ["core", "drill", "mock", "network", "superday", "firms", "timeline", "story", "peer", "club", "hq", "dashboard", "main"];
   const buildApp = () => APP_FILES.map((f) => fs.readFileSync(new URL(`./public/app/${f}.js`, import.meta.url), "utf8")).join("\n");
   let appBundle = buildApp();
   app.get("/app.js", (req, res) => {

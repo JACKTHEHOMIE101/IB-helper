@@ -41,6 +41,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .eyebrow{font:600 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 h2{font:600 1.35rem/1.2 var(--display);margin:0;text-wrap:balance}
 h3{font:600 1.05rem/1.25 var(--display);margin:0}
+dialog a{color:var(--accent)}
+dialog .stats{margin-bottom:0}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:6px;background:var(--surface);margin-bottom:16px}
 .stats div{padding:10px 14px;border-left:1px solid var(--line)}
 .stats div:first-child{border-left:0}
@@ -252,7 +254,7 @@ table.board tr.me td{background:var(--sunk)}
 table.board tr.me td.sorted{background:var(--accent-soft)}
 .seg{flex-wrap:wrap}
 .acct{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:flex-end;font-size:.8rem}
-.acct .who{color:var(--muted);max-width:16em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct .who{max-width:16em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .planchip{font:600 .7rem var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:3px;background:var(--sunk);color:var(--muted)}
 .planchip.pro{background:var(--accent);color:var(--accent-ink)}
 .pro{font:700 .62rem var(--mono);letter-spacing:.04em;color:#fff;background:var(--amber);padding:1px 5px;border-radius:3px;margin-left:4px;vertical-align:1px}
@@ -500,6 +502,7 @@ details.qa summary:focus-visible{outline:2px solid var(--accent);outline-offset:
   <p class="hint" id="authMsg" style="margin:0" role="status"></p>
   <form id="devForm" class="stack" style="gap:8px" hidden><label for="devName" style="margin:0">Local development sign-in</label><div class="row" style="flex-wrap:nowrap"><input id="devName" placeholder="alex" style="min-width:0"><button class="btn" type="submit">Sign in</button></div></form>
   <p class="hint" style="margin:0">Free: the core question set, readiness score, networking tracker, peer mocks, club leaderboard and some AI practice each week. <a href="/quiz">Take the free readiness quiz</a>.</p>
+  <p class="hint" style="margin:0">By signing in you agree to the <a href="/terms">terms</a> and <a href="/privacy">privacy policy</a>.</p>
 </div>
 
 <dialog id="paywall">
@@ -515,6 +518,49 @@ details.qa summary:focus-visible{outline:2px solid var(--accent);outline-offset:
     <p style="margin:0"><b id="payPrice"></b> · cancel anytime</p>
     <div class="row" style="justify-content:flex-end"><button class="btn" id="payClose" type="button">Not now</button><button class="btn primary" id="payGo" type="button">Upgrade</button></div>
   </div>
+</dialog>
+
+<dialog id="acctDlg">
+  <div class="stack">
+    <div class="row" style="justify-content:space-between"><h2>Your account</h2><button class="btn sm" id="adClose" type="button">Close</button></div>
+    <p class="hint" style="margin:0"><span id="adEmail"></span><br><span id="adPlan"></span></p>
+    <form id="adNameForm" class="stack" style="gap:6px"><label for="adName" style="margin:0">Name shown on club leaderboards</label>
+      <div class="row" style="flex-wrap:nowrap"><input id="adName" maxlength="60" style="min-width:0"><button class="btn" type="submit">Save</button></div></form>
+    <div class="row"><button class="btn primary" id="adUpgrade" type="button">Upgrade to Pro</button><button class="btn" id="adBilling" type="button">Manage billing</button><button class="btn" id="adSignOut" type="button">Sign out</button></div>
+    <div class="stack" style="gap:8px;border-top:1px solid var(--line);padding-top:14px">
+      <h3>Your data</h3>
+      <p class="hint" style="margin:0">Your progress, resume, contacts and notes are private to you. You can download a copy or delete everything at any time. See the <a href="/privacy" target="_blank" rel="noopener">privacy policy</a>.</p>
+      <div class="row"><button class="btn" id="adExport" type="button">Download my data</button><button class="btn" id="adDelete" type="button" style="color:var(--red)">Delete my account</button></div>
+      <div id="adDeleteBox" class="stack" style="gap:8px" hidden>
+        <p style="margin:0">This permanently deletes your account, progress, resume, contacts and notes, removes you from any leaderboard and cancels your subscription. It can't be undone.</p>
+        <label for="adDeleteConfirm" style="margin:0">Type DELETE to confirm</label>
+        <div class="row" style="flex-wrap:nowrap"><input id="adDeleteConfirm" autocomplete="off" style="min-width:0"><button class="btn" id="adDeleteGo" type="button" style="color:var(--red);white-space:nowrap">Delete forever</button></div>
+      </div>
+    </div>
+    <p class="hint" id="adMsg" style="margin:0" role="status"></p>
+  </div>
+</dialog>
+
+<dialog id="adminDlg" style="width:min(760px,calc(100vw - 32px))">
+  <div class="stack">
+    <div class="row" style="justify-content:space-between"><h2>Founder stats</h2><button class="btn sm" id="adminClose" type="button">Close</button></div>
+    <div id="adminBody" class="stack"></div>
+  </div>
+</dialog>
+
+<dialog id="onboardDlg">
+  <form id="onboardForm" class="stack" method="dialog">
+    <div><span class="eyebrow">Welcome to Superday Prep</span><h2 style="margin-top:4px">Tell us about you</h2>
+    <p class="hint" style="margin:6px 0 0">This fills in your email drafts, your recruiting timeline and your interview stories. You can change it later.</p></div>
+    <div class="grid2">
+      <div><label for="obName">Your name</label><input id="obName" placeholder="Alex Carter" maxlength="60"></div>
+      <div><label for="obYear">Year</label><select id="obYear"><option value="freshman">Freshman</option><option value="sophomore" selected>Sophomore</option><option value="junior">Junior</option><option value="senior">Senior</option></select></div>
+      <div><label for="obSchool">School</label><input id="obSchool" placeholder="University of Missouri" maxlength="120"></div>
+      <div><label for="obShort">School nickname</label><input id="obShort" placeholder="Mizzou" maxlength="40"></div>
+    </div>
+    <div><label for="obMajor">Major</label><input id="obMajor" placeholder="Finance and Banking" maxlength="120"></div>
+    <div class="row" style="justify-content:flex-end"><button type="button" class="btn" id="obSkip">Skip for now</button><button type="submit" class="btn primary">Get started</button></div>
+  </form>
 </dialog>
 
 <script src="/config.js"></script>
